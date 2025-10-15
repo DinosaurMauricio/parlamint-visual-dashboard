@@ -36,7 +36,7 @@ def create_sidebar(df):
                         st.checkbox(str(y), value=select_all, key=f"{key.lower()}_{y}")
 
 
-def create_view(df, filters):
+def create_view(df, text_df, filters):
     # TODO: This for sure could be abstracted in a more simple redable way
     # for now, simple like this, is fine
     tab = st.selectbox("Choose Insights view", ["Text Overview", "Gender", "Topic"])
