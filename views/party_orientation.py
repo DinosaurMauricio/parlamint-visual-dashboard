@@ -1,7 +1,7 @@
 import streamlit as st
 
 from ui.charts import ChartBuilder
-from ui.aggregations import aggregate_topics_by_party
+from utils.aggregators import aggregate_topics_by_party
 
 
 def create_orientation_view(df, filters, orientation):
