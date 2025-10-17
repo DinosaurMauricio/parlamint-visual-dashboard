@@ -3,10 +3,11 @@ import streamlit as st
 from config import FILTERS
 from data.loader import get_view_options
 from ui.charts import ChartBuilder
-from ui.aggregations import (
+from utils.aggregators import (
     aggregate_words,
     aggregate_count_by_columns,
 )
+from utils.text_analyzer import TextAnalyzer
 
 
 def create_sidebar(df):
@@ -35,13 +36,29 @@ def create_view(df, text_df, filters):
     tab = st.selectbox("Choose Insights view", ["Text Overview", "Gender", "Topic"])
 
     chart_builder = ChartBuilder(filters)
+    text_analyzer = TextAnalyzer()
+
+    # processing all the texts could take hours because the amount of text so
+    # to speed it up just preprocessed with spaCy in colab
+
+    pre_processed_df = st.session_state.pre_processed_df
 
     # NOTE: Could be further abstracted but this
     # structure is readable and clear for now.
     if tab == "Text Overview":
-        # TODO: Use for statistics
-        # word_count_tab, gender_tab, topic_tab = st.tabs(["Word", "Gender", "Topic"])
-        # with word_count_tab:
+        word_count_tab, other_tab = st.tabs(["Word", "Other"])
+        with word_count_tab:
+            sentences_count = text_analyzer.get_corpus_senteces_count(text_df)
+            unique_sentences_count = text_analyzer.get_corpus_unique_sentences_count(
+                text_df
+            )
+            duplicated_sentences = sentences_count - unique_sentences_count
+            results = text_analyzer.get_data_statistics(pre_processed_df)
+
+            st.write(f"Sentences in Corpus: {sentences_count}")
+            st.write(f"Unique sentences in Corpus: {unique_sentences_count}")
+            st.write(f"Duplicate sentences in Corpus: {duplicated_sentences}")
+
         aggregator = lambda: aggregate_words(df, filters)
         chart_fn = lambda x: chart_builder.build_word_count_bar_chart(x)
         display_chart(aggregator, chart_fn)

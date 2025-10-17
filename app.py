@@ -1,11 +1,10 @@
 import streamlit as st
 
 from views.general import create_view
-from utils.filters import get_active_filters
-from state import load_app_state
 from views.general import create_sidebar, create_view
 from views.party_orientation import create_orientation_view
-from config import DATA_PATH
+from utils.filters import get_active_filters
+from state import load_app_state
 
 # Config
 st.set_page_config(
@@ -13,7 +12,9 @@ st.set_page_config(
 )
 
 # Data
-df, text_df = load_app_state()
+load_app_state()
+df = st.session_state.df
+text_df = st.session_state.text_df
 
 # Views
 st.title("ParlaMint Dashboard")
