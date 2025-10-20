@@ -1,4 +1,5 @@
 import plotly.express as px
+import streamlit as st
 
 
 class ChartBuilder:
@@ -56,11 +57,24 @@ class ChartBuilder:
             labels={"Count": "Mentions", "year": "Year"},
         )
 
-    def build_pie_chart(self, df, orientation):
+    def build_pie_chart(self, df, title):
+        return px.pie(df, names=df.index, values=df.values, title=title, hole=0.3)
 
-        return px.pie(
-            df,
-            names="Topic",
-            values="Count",
-            title=f"Topic Mentions by {orientation}",
-        )
+    @staticmethod
+    def display_chart(
+        aggregator, chart, error_message="No data available for the selected filters."
+    ):
+        """
+        Display a chart based on an aggregator function and a chart function.
+
+        Args:
+            aggregator (callable): Function that returns the aggregated DataFrame.
+            chart_fn (callable): Function that takes the aggregated DataFrame and returns a Plotly figure.
+            error_message (str, optional): Message to display if the aggregated data is empty.
+        """
+        grouped = aggregator()
+        if grouped.empty:
+            st.warning(error_message)
+        else:
+            fig = chart(grouped)
+            st.plotly_chart(fig, use_container_width=True)
