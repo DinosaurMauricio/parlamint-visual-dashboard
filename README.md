@@ -5,9 +5,13 @@ This is a work-in-progress Streamlit dashboard for getting a better view of the 
 ## TODO
 
 - [x] Add filtering by country, party, and time period
-  - [ ] Add more advanced filters (e.g., speaker, session type)
-- [ ] Include basic NLP metrics (word frequency, lexical diversity, skewness, etc.)
-- [ ] Improve visualization layouts and performance
+- [x] Include basic NLP metrics (word frequency, lexical diversity, skewness, etc.)
+- [x] Improve visualization layouts and performance
 
-Quick snapshot of the progress ( ◡‿◡)
+### Future ideas
+
+- [ ] Add more filters (e.g., speaker, date)
+- [ ] Integrate data from additional countries
+
+Quick snapshot:
 ![Dashboard screenshot](image_examples/dashboard_progress.png)
