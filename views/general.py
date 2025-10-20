@@ -48,7 +48,7 @@ def create_view(df, text_df, filters):
     if tab == "Text Overview":
         word_count_tab, segments_tab, other_tab = st.tabs(["Word", "Segments", "Other"])
         with word_count_tab:
-            sentences_count = text_analyzer.get_corpus_senteces_count(text_df)
+            sentences_count = text_analyzer.get_number_of_rows(text_df)
             unique_sentences_count = text_analyzer.get_corpus_unique_sentences_count(
                 text_df
             )
@@ -58,8 +58,6 @@ def create_view(df, text_df, filters):
             total_words = text_analyzer.get_total_words_corpus(text_df)
 
             sentence_skewness = text_analyzer.get_sentences_skewness(pre_processed_df)
-            # If doc_skewness > 0, you have a few very long documents and many short ones (right-skewed).
-            # If doc_skewness < 0, your dataset has many long documents and fewer short ones (left-skewed).
 
             # vocabulary richeness, its the unique tokens / all tokens
             type_token_ratio = results["total_words"] / total_words
