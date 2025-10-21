@@ -78,3 +78,15 @@ class ChartBuilder:
         else:
             fig = chart(grouped)
             st.plotly_chart(fig, use_container_width=True)
+
+    def build_speaker_party_per_year_chart(self, df):
+        return px.bar(
+            df,
+            x="year",
+            y="Count",
+            color="Speaker_party",
+            barmode="group",
+            title="Utterances per Year by Party",
+            # hover_data=["Topic"],
+            labels={"Count": "Utterances", "year": "Year"},
+        )
