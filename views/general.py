@@ -47,6 +47,7 @@ class GeneralView:
         overview_analysis = OverviewAnalysisSection(text_analyzer)
         gender_analysis = GenderAnalysisSection(text_analyzer, chart_builder)
         topic_analysis = TopicAnalysisSection(text_analyzer, chart_builder)
+        party_analysis = PartyAnalysisSection(text_analyzer, chart_builder)
 
         # processing all the texts could take hours because the amount of text so
         # to speed it up just preprocessed with spaCy in colab
@@ -74,5 +75,6 @@ class GeneralView:
 
         elif tab == "Topic":
             topic_analysis.render(df, filters)
-        # elif tab == "Party":
-        #    party_analysis.render(df)
+        elif tab == "Party":
+            # Want to keep only 1 utterance per row
+            party_analysis.render(df)

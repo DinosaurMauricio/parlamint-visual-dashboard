@@ -1,4 +1,4 @@
-class WordCounter:
+class WordAnalysis:
 
     @staticmethod
     def calculate_word_count(df, column):

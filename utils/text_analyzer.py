@@ -1,7 +1,7 @@
 import spacy
 import streamlit as st
 
-from utils.word_counter import WordCounter
+from utils.word_analysis import WordAnalysis
 from utils.vocabulary_analyzer import VocabularyAnalyzer
 from utils.corpus_metrics import CorpusMetrics, SegmentMetrics
 from collections import Counter
@@ -13,10 +13,12 @@ class TextAnalyzer(metaclass=SingletonMeta):
 
     def __init__(self, lang_model="en_core_web_sm"):
         self.nlp = spacy.load(lang_model, disable=["parser", "ner", "tagger"])
-        self.word_counter = WordCounter()
+        self.word_analysis = WordAnalysis()
         self.vocabulary_analyzer = VocabularyAnalyzer()
-        self.corpus_metrics = CorpusMetrics(self.word_counter, self.vocabulary_analyzer)
-        self.segment_metrics = SegmentMetrics(self.word_counter)
+        self.corpus_metrics = CorpusMetrics(
+            self.word_analysis, self.vocabulary_analyzer
+        )
+        self.segment_metrics = SegmentMetrics(self.word_analysis)
 
     @staticmethod
     @st.cache_data
@@ -31,16 +33,12 @@ class TextAnalyzer(metaclass=SingletonMeta):
     @staticmethod
     @st.cache_data
     def get_total_words_corpus(df):
-
-        # TODO: Check this, maybe this makes it crash because there is no word count per say
-        # df["word_count"] = df["full_text"].str.split().str.len()
         word_count = df["full_text"].str.split().str.len()
         return word_count.sum()
 
     @staticmethod
     @st.cache_data
     def get_sentences_skewness(df):
-        # TODO: Same as before, check this doesn't break anything
         word_count = df["clean_text"].str.split().str.len()
         return skew(word_count)
 

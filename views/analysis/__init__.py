@@ -4,6 +4,7 @@ from .segments_analysis import SegmentAnalysisSection
 from .sentiment_analysis import SentimentAnalysisSection
 from .topic_analysis import TopicAnalysisSection
 from .word_analysis import WordAnalysisSection
+from .party_analysis import PartyAnalysisSection
 
 __all__ = [
     "GenderAnalysisSection",
@@ -12,4 +13,5 @@ __all__ = [
     "SentimentAnalysisSection",
     "TopicAnalysisSection",
     "WordAnalysisSection",
+    "PartyAnalysisSection",
 ]
