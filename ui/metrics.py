@@ -20,4 +20,4 @@ class DashboardMetrics:
     @staticmethod
     def render_dataframe(title, data):
         st.subheader(title)
-        st.dataframe(pd.DataFrame(data), hide_index=True, use_container_width=True)
+        st.dataframe(pd.DataFrame(data), hide_index=True, width="stretch")

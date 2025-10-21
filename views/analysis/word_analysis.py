@@ -1,10 +1,12 @@
 import streamlit as st
 import pandas as pd
+from utils.aggregators import aggregate_words
 
 
 class WordAnalysisSection:
-    def __init__(self, text_analyzer):
+    def __init__(self, text_analyzer, chart_builder):
         self.text_analyzer = text_analyzer
+        self.chart_builder = chart_builder
 
     def render(self, pre_processed_df):
 
@@ -18,4 +20,9 @@ class WordAnalysisSection:
 
         freq_df = pd.DataFrame(most_frequent, columns=["Word", "Frequency"])
         freq_df.index = freq_df.index + 1
-        st.dataframe(freq_df, use_container_width=True)
+        st.dataframe(freq_df, width="stretch")
+
+    def render_chart(self, df, filters):
+        aggregator = lambda: aggregate_words(df, filters)
+        chart_fn = lambda x: self.chart_builder.build_word_count_bar_chart(x)
+        self.chart_builder.display_chart(aggregator, chart_fn)

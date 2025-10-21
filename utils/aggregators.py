@@ -19,7 +19,9 @@ def aggregate_topics_by_party(df, filters, orientation):
 
     party_data = topic_counts[topic_counts["Party_orientation"] == orientation]
 
-    return party_data
+    topic_summary = party_data.groupby("Topic")["Count"].sum()
+
+    return topic_summary
 
 
 def aggregate_count_by_columns(df, filters, columns, filter_keys=[]):

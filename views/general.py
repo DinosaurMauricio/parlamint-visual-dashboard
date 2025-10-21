@@ -6,11 +6,10 @@ from views.analysis.overview_analysis import OverviewAnalysisSection
 from views.analysis.sentiment_analysis import SentimentAnalysisSection
 from views.analysis.segments_analysis import SegmentAnalysisSection
 from views.analysis.word_analysis import WordAnalysisSection
+from views.analysis.gender_analysis import GenderAnalysisSection
+from views.analysis.topic_analysis import TopicAnalysisSection
 from ui.charts import ChartBuilder
-from utils.aggregators import (
-    aggregate_words,
-    aggregate_count_by_columns,
-)
+
 from utils.text_analyzer import TextAnalyzer
 
 
@@ -49,15 +48,15 @@ class GeneralView:
         text_analyzer = TextAnalyzer()
         sentiment_analysis = SentimentAnalysisSection(text_analyzer, chart_builder)
         segment_analysis = SegmentAnalysisSection(text_analyzer)
-        word_analysis = WordAnalysisSection(text_analyzer)
+        word_analysis = WordAnalysisSection(text_analyzer, chart_builder)
         overview_analysis = OverviewAnalysisSection(text_analyzer)
+        gender_analysis = GenderAnalysisSection(text_analyzer, chart_builder)
+        topic_analysis = TopicAnalysisSection(text_analyzer, chart_builder)
 
         # processing all the texts could take hours because the amount of text so
         # to speed it up just preprocessed with spaCy in colab
         pre_processed_df = st.session_state.pre_processed_df
 
-        # NOTE: Could be further abstracted but this
-        # structure is readable and clear for now.
         if tab == "Dataset Overview":
             overview_tab, words_tab, segments_tab, sentiment_tab = st.tabs(
                 ["Overview", "Words", "Segments", "Sentiment"]
@@ -67,10 +66,7 @@ class GeneralView:
 
             with words_tab:
                 word_analysis.render(pre_processed_df)
-
-                aggregator = lambda: aggregate_words(df, filters)
-                chart_fn = lambda x: chart_builder.build_word_count_bar_chart(x)
-                chart_builder.display_chart(aggregator, chart_fn)
+                word_analysis.render_chart(df, filters)
 
             with segments_tab:
                 segment_analysis.render(df)
@@ -79,34 +75,7 @@ class GeneralView:
                 sentiment_analysis.render(df)
 
         elif tab == "Gender":
-            aggregator = lambda: aggregate_count_by_columns(
-                df,
-                filters,
-                ["year", "Speaker_gender"],
-                ["year"],
-            )
-            chart_fn = lambda x: chart_builder.build_gender_by_year_line_chart(x)
-            chart_builder.display_chart(aggregator, chart_fn)
+            gender_analysis.render(df, filters)
 
         elif tab == "Topic":
-            aggregator = lambda: aggregate_count_by_columns(
-                df,
-                filters,
-                ["Party_orientation", "Topic"],
-                ["Party_orientation", "Topic"],
-            )
-            chart_fn = (
-                lambda x: chart_builder.build_count_by_topic_and_orientation_bar_chart(
-                    x
-                )
-            )
-            chart_builder.display_chart(aggregator, chart_fn)
-
-            aggregator = lambda: aggregate_count_by_columns(
-                df,
-                filters,
-                ["Party_orientation", "Topic", "year"],
-                ["Party_orientation", "Topic", "year"],
-            )
-            chart_fn = lambda x: chart_builder.build_topics_per_year_chart(x)
-            chart_builder.display_chart(aggregator, chart_fn)
+            topic_analysis.render(df, filters)
