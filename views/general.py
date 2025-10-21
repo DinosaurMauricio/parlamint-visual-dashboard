@@ -2,12 +2,7 @@ import streamlit as st
 
 from config import FILTERS
 from data.loader import get_view_options
-from views.analysis.overview_analysis import OverviewAnalysisSection
-from views.analysis.sentiment_analysis import SentimentAnalysisSection
-from views.analysis.segments_analysis import SegmentAnalysisSection
-from views.analysis.word_analysis import WordAnalysisSection
-from views.analysis.gender_analysis import GenderAnalysisSection
-from views.analysis.topic_analysis import TopicAnalysisSection
+from views.analysis import *
 from ui.charts import ChartBuilder
 
 from utils.text_analyzer import TextAnalyzer
@@ -41,7 +36,7 @@ class GeneralView:
     @staticmethod
     def create_view(df, text_df, filters):
         tab = st.selectbox(
-            "Choose Insights view", ["Dataset Overview", "Gender", "Topic"]
+            "Choose Insights view", ["Dataset Overview", "Gender", "Topic", "Party"]
         )
 
         chart_builder = ChartBuilder(filters)
@@ -79,3 +74,5 @@ class GeneralView:
 
         elif tab == "Topic":
             topic_analysis.render(df, filters)
+        # elif tab == "Party":
+        #    party_analysis.render(df)
