@@ -32,6 +32,11 @@ class TextAnalyzer(metaclass=SingletonMeta):
 
     @staticmethod
     @st.cache_data
+    def get_corpus_unique_segments_count(df):
+        return df.text.nunique()
+
+    @staticmethod
+    @st.cache_data
     def get_total_words_corpus(df):
         word_count = df["full_text"].str.split().str.len()
         return word_count.sum()

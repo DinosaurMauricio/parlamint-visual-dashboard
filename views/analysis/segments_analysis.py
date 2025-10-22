@@ -10,6 +10,7 @@ class SegmentAnalysisSection:
 
         number_of_segments = self.text_analyzer.get_number_of_rows(df)
         data = self.text_analyzer.get_segments_word_statistics(df)
+        unique_sentences = self.text_analyzer.get_corpus_unique_segments_count(df)
 
         metrics = [
             {"label": "Total Segments", "value": f"{number_of_segments:,}"},
@@ -17,6 +18,7 @@ class SegmentAnalysisSection:
             {"label": "Max. Length", "value": f"{data["max_len"]}"},
             {"label": "Min. Length", "value": f"{data["min_len"]}"},
             {"label": "Total words", "value": f"{data["total_words"]:,}"},
+            {"label": "Unique Sentences", "value": f"{unique_sentences:,}"},
         ]
 
         DashboardMetrics.render_metrics_row(metrics)
