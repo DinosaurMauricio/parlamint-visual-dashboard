@@ -34,7 +34,7 @@ class OverviewAnalysisSection:
             {"label": "Duplicates", "value": f"{duplicated_sentences:,}"},
             {
                 "label": "Avg. Sentence Length",
-                "value": f"{results['average_length']:.1f}",
+                "value": f"{results['average_length']:.2f}",
             },
             {"label": "Type-Token Ratio", "value": f"{type_token_ratio:.3f}"},
             {"label": "Skewness", "value": f"{sentence_skewness:.2f}"},
@@ -49,7 +49,7 @@ class OverviewAnalysisSection:
                 "Value": [
                     results["min_len"],
                     results["max_len"],
-                    f"{results['average_length']:.2f}",
+                    float(f"{results['average_length']:.2f}"),
                     results["max_len"] - results["min_len"],
                 ],
             },
